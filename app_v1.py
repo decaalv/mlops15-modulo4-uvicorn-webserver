@@ -1,11 +1,24 @@
+import pandas as pd
+from joblib import load
 from fastapi import FastAPI
 from pydantic import BaseModel
+from Houses import House
 
+classifier = load("./models/linear_regression.joblib")
 
 # ---------------------------------------------------------------------------
 # Initialize app
 # ---------------------------------------------------------------------------
 app = FastAPI()
+
+@app.post("/predict")
+async def predict_price(house: House):
+    house_data = pd.DataFrame([house.dict()])
+    prediction = classifier.predict(house_data)
+    return {
+        'sale_price': prediction.tolist()
+    }
+
 
 # ---------------------------------------------------------------------------
 # Define a Pydantic model for the request body

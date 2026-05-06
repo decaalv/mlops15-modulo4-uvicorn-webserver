@@ -3,3 +3,6 @@ uvicorn
 databases
 sqlalchemy
 aiosqlite
+pandas
+joblib
+scikit-learn
